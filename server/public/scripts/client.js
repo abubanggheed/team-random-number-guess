@@ -1,8 +1,8 @@
 $(document).ready(onReady);
 
 function onReady() {
-    console.log('ready');
     $('#guessBtn').on('click', handleGuessClick);
+    $('#inputDiv').on('click', '#resetBtn', restart);
     restart();
 }
 
@@ -13,13 +13,11 @@ function handleGuessClick() {
         player3: $('#PlayerThreeIn').val(),
         player4: $('#PlayerFourIn').val()
     }
-    console.log(objectToSend);
     $.ajax({
         method: 'POST',
         url: '/guess',
         data: objectToSend
     }).then((response) => {
-        console.log('back from server with response', response);
         getGuessesFromServer();
     });
 }
@@ -31,10 +29,17 @@ function getGuessesFromServer() {
     }).then((response) => {
         let el = $('#guessOut');
         el.empty();
+        let finish = false;
         for (let answer of response) {
+            if (answer.response === 'you got it!'){
+                finish = true;
+            }
             el.append(`
-        <li> player${answer.player}: ${answer.response}</li>
+        <li>${answer.player}: ${answer.response}</li>
         `);
+        }
+        if (finish) {
+            finishGame();
         }
     }).catch( (error) => {
         alert('error',error)
@@ -42,11 +47,20 @@ function getGuessesFromServer() {
 }
 
 function restart(){
+    $('#guessBtn').removeAttr('disabled');
+    $('#resetBtn').remove();
+    $('#guessOut').empty();
     $.ajax({
         method: 'POST',
         url: '/init',
         data: {}
     }).then( (response) => {
-        console.log(response);
-    })
+    });
+}
+
+function finishGame(){
+    $('#inputDiv').append(`
+    <button id="resetBtn">Reset</button>
+    `);
+    $('#guessBtn').attr('disabled', 'disabled');
 }
