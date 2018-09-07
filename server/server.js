@@ -20,7 +20,7 @@ app.listen(port, () => {
 
 app.post('/init', (req, res) => {
     number = randomNumber(1, 25);
-    res.send(200);
+    res.sendStatus(200);
 });
 
 app.get('/guess', (req, res) => {
@@ -30,7 +30,7 @@ app.get('/guess', (req, res) => {
 
 app.post('/guess', (req, res) => {
     configureGuesses(req.body);
-    res.send(200);
+    res.sendStatus(200);
 });
 
 function configureGuesses(objectIn){
