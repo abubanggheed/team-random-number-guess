@@ -3,9 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const port = 5000;
 const app = express();
-function randomNumber (min, max) {
-    return Math.floor(Math.random() * (1 + max - min)) + min;
-}
+const createRandomNumber = require('./modules/random-number-generator.js');
 let number;
 // uses
 app.use(express.static('server/public'));
@@ -19,7 +17,7 @@ app.listen(port, () => {
 });
 
 app.post('/init', (req, res) => {
-    number = randomNumber(1, 25);
+    number = createRandomNumber(1, 25);
     res.sendStatus(200);
 });
 
@@ -35,7 +33,7 @@ app.post('/guess', (req, res) => {
 
 function configureGuesses(objectIn){
     guesses = [];
-    let botGuess = randomNumber(1, 25);
+    let botGuess = createRandomNumber(1, 25);
     let botResponse = 'the bot guessed ' + botGuess + ':';
     if (botGuess === number) {
         botResponse = 'You puny humans are no match for my machine intelligence!';
