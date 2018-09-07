@@ -36,10 +36,11 @@ function getGuessesFromServer() {
         url: '/guess'
     }).then((response) => {
         let el = $('#guessOut');
+        let correct = 'YOU ARE THE WINNER!!!';
         let finish = false;
         let stringToAppend = `<h4>Round: ` + counter + `</h4><ul>`;
         for (let answer of response) {
-            if (answer.response === 'you got it!'){
+            if (answer.response === correct.fontsize(7)){
                 finish = true;
             }
             stringToAppend += `

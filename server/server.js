@@ -24,7 +24,7 @@ app.post('/init', (req, res) => {
 });
 
 app.get('/guess', (req, res) => {
-    console.log('sending');
+    console.log('sending, the answer is', number);
     res.send(guesses);
 });
 
@@ -54,12 +54,13 @@ function configureGuesses(objectIn){
 }
 
 function doLogic(guess){
+    let winner = 'YOU ARE THE WINNER!!!';
     if (guess > number){
         return 'too high!';
     } else if (guess < number) {
         return 'too low!'
     } else if (guess == number) {
-        return 'you got it!';
+        return winner.fontsize(7);
     } else {
         return 'enter and actual number chump }:-('
     }
