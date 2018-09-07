@@ -22,12 +22,12 @@ function handleGuessClick() {
         getGuessesFromServer();
     });
 
-    $('#roundsOut').html(keepTrackOfRounds); 
+    $('#roundsOut').html(keepTrackOfRounds);
 }
 
 let counter = 0;
-function keepTrackOfRounds(){
-    return counter +=1;
+function keepTrackOfRounds() {
+    return counter += 1;
 }
 
 function getGuessesFromServer() {
@@ -37,38 +37,38 @@ function getGuessesFromServer() {
     }).then((response) => {
         let el = $('#guessOut');
         let correct = 'YOU ARE THE WINNER!!!';
+        let botCorrect = 'I AM THE WINNER!!!';
         let finish = false;
         let stringToAppend = `<h4>Round: ` + counter + `</h4><ul>`;
         for (let answer of response) {
-            if (answer.response === correct.fontsize(7)){
+            if (answer.response === correct.fontsize(7) || answer.response === botCorrect.fontsize(7)) {
                 finish = true;
             }
             stringToAppend += `
-            <li>${answer.player} : ${answer.response}</li>
+            <li>${answer.player} ${answer.response}</li>
             `
         }
         el.append(stringToAppend + '</ul>');
         if (finish) {
             finishGame();
         }
-    }).catch( (error) => {
-        alert('error',error)
+    }).catch((error) => {
+        alert('error', error)
     })
 }
 
-function restart(){
+function restart() {
     $('#guessOut').empty();
-    
+
     $('#guessBtn').removeAttr('disabled');
     $('#resetBtn').remove();
     //the previous two lines were added to undo all the work done by
     //finishGame
-    $('#guessOut').empty();
     $.ajax({
         method: 'POST',
         url: '/init',
         data: {}
-    }).then( (response) => {
+    }).then((response) => {
     });
 
     $('#PlayerOneIn').val('');
@@ -77,14 +77,14 @@ function restart(){
     $('#PlayerFourIn').val('');
 
     counter = -1;
-    $('#roundsOut').html(keepTrackOfRounds); 
+    $('#roundsOut').html(keepTrackOfRounds);
 }
 //finishGame disables the submit guess button and creates a the reset button
 //complete the game on your browser for a full demonstration
-function finishGame(){
+function finishGame() {
     $('#inputDiv').append(`
     <button id="resetBtn">Reset</button>
     `);
     $('#guessBtn').attr('disabled', 'disabled');
-    
+
 }
