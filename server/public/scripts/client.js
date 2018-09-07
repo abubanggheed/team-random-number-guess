@@ -21,6 +21,13 @@ function handleGuessClick() {
     }).then((response) => {
         getGuessesFromServer();
     });
+
+    $('#roundsOut').html(keepTrackOfRounds); 
+}
+
+let counter = 0;
+function keepTrackOfRounds(){
+    return counter +=1;
 }
 
 function getGuessesFromServer() {
@@ -29,16 +36,17 @@ function getGuessesFromServer() {
         url: '/guess'
     }).then((response) => {
         let el = $('#guessOut');
-        el.empty();
         let finish = false;
+        let stringToAppend = `<h4>Round: ` + counter + `</h4><ul>`;
         for (let answer of response) {
             if (answer.response === 'you got it!'){
                 finish = true;
             }
-            el.append(`
-        <li>${answer.player}: ${answer.response}</li>
-        `);
+            stringToAppend += `
+            <li>${answer.player} : ${answer.response}</li>
+            `
         }
+        el.append(stringToAppend + '</ul>');
         if (finish) {
             finishGame();
         }
@@ -48,6 +56,8 @@ function getGuessesFromServer() {
 }
 
 function restart(){
+    $('#guessOut').empty();
+    
     $('#guessBtn').removeAttr('disabled');
     $('#resetBtn').remove();
     //the previous two lines were added to undo all the work done by
@@ -59,6 +69,14 @@ function restart(){
         data: {}
     }).then( (response) => {
     });
+
+    $('#PlayerOneIn').val('');
+    $('#PlayerTwoIn').val('');
+    $('#PlayerThreeIn').val('');
+    $('#PlayerFourIn').val('');
+
+    counter = -1;
+    $('#roundsOut').html(keepTrackOfRounds); 
 }
 //finishGame disables the submit guess button and creates a the reset button
 //complete the game on your browser for a full demonstration
@@ -67,4 +85,5 @@ function finishGame(){
     <button id="resetBtn">Reset</button>
     `);
     $('#guessBtn').attr('disabled', 'disabled');
+    
 }
