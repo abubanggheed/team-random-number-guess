@@ -2,6 +2,7 @@ $(document).ready(onReady);
 
 function onReady() {
     $('#guessBtn').on('click', handleGuessClick);
+    //reset button click handler added 
     $('#inputDiv').on('click', '#resetBtn', restart);
     restart();
 }
@@ -49,6 +50,8 @@ function getGuessesFromServer() {
 function restart(){
     $('#guessBtn').removeAttr('disabled');
     $('#resetBtn').remove();
+    //the previous two lines were added to undo all the work done by
+    //finishGame
     $('#guessOut').empty();
     $.ajax({
         method: 'POST',
@@ -57,7 +60,8 @@ function restart(){
     }).then( (response) => {
     });
 }
-
+//finishGame disables the submit guess button and creates a the reset button
+//complete the game on your browser for a full demonstration
 function finishGame(){
     $('#inputDiv').append(`
     <button id="resetBtn">Reset</button>

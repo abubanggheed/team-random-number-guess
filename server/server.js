@@ -12,9 +12,7 @@ app.use(express.static('server/public'));
 app.use(bodyParser.urlencoded( {extended: true} ));// needed for post for JQ ajax
 // global
 
-///temp
 let guesses;
-///end temp
 
 app.listen(port, () => {
     console.log('server is up on', port); 
@@ -57,9 +55,9 @@ function configureGuesses(objectIn){
 
 function doLogic(guess){
     if (guess > number){
-        return 'greater than!';
+        return 'too high!';
     } else if (guess < number) {
-        return 'less than!'
+        return 'too low!'
     } else if (guess == number) {
         return 'you got it!';
     } else {
